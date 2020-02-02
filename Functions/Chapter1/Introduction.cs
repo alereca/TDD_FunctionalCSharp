@@ -18,16 +18,6 @@ namespace Functions
                 return list;
             }
 
-            if (list.Count() == 2)
-            {
-                if (list.ElementAt(0) > list.ElementAt(1))
-                {
-                    return new List<int> { list.ElementAt(1), list.ElementAt(0) };
-                }
-
-                return list;
-            }
-
             var pivot = list.ElementAt(list.Count() / 2);
 
             var smaller = list.Where(x => x < pivot).ToList();
@@ -36,6 +26,24 @@ namespace Functions
             return Quicksort(smaller)
                 .Append(pivot)
                 .Concat(Quicksort(bigger))
+                .ToList();
+        }
+
+        public static List<T> GenericQuicksort<T>(List<T> list, Comparison<T> comparison)
+        {
+            if (list.Count() < 2)
+            {
+                return list;
+            }
+
+            var pivot = list.ElementAt(list.Count() / 2);
+
+            var smaller = list.Where(x => comparison(x, pivot) < 0).ToList();
+            var bigger = list.Where(x => comparison(x, pivot) > 0).ToList();
+
+            return GenericQuicksort(smaller, comparison)
+                .Append(pivot)
+                .Concat(GenericQuicksort(bigger, comparison))
                 .ToList();
         }
     }

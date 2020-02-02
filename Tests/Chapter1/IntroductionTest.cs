@@ -29,9 +29,33 @@ namespace Tests
             var originalList = new List<int> { 7, 1, 3, 2 };
             //Act
             var sortedList = Quicksort(originalList);
-            //Assert,
+            //Assert
             Assert.Equal(expected: new List<int> { 1, 2, 3, 7 }, actual: sortedList);
             Assert.Equal(expected: new List<int> { 7, 1, 3, 2 }, actual: originalList);
+        }
+
+        // 3. Generalize your implementation to take a `List<T>`, and additionally a 
+        // `Comparison<T>` delegate.
+        [Fact]
+        public void GenericQuicksortShouldReturnSortedIntListAndNotMutateTest()
+        {   //Arrange
+            var originalList = new List<int> { 7, 1, 3, 2 };
+            //Act
+            var sortedList = GenericQuicksort(originalList, (a, b) => a - b);
+            //Assert
+            Assert.Equal(expected: new List<int> { 1, 2, 3, 7 }, actual: sortedList);
+            Assert.Equal(expected: new List<int> { 7, 1, 3, 2 }, actual: originalList);
+        }
+
+        [Fact]
+        public void GenericQuicksortShouldReturnSortedStringListAndNotMutateTest()
+        {   //Arrange
+            var originalList = new List<string> { "sam", "alex", "karl", "junior" };
+            //Act
+            var sortedList = GenericQuicksort(originalList, (a, b) => a.CompareTo(b));
+            //Assert
+            Assert.Equal(expected: new List<string> { "alex", "junior", "karl", "sam" }, actual: sortedList);
+            Assert.Equal(expected: new List<string> { "sam", "alex", "karl", "junior" }, actual: originalList);
         }
     }
 }
