@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using Functions;
+using static Functions.Introduction;
 using System.Collections.Generic;
 
 namespace Tests
@@ -26,12 +26,12 @@ namespace Tests
         [Fact]
         public void QuicksortShouldReturnSortedListAndNotMutateTest()
         {   //Arrange
-            var originalList = new List<int> { 7, 3 };
+            var originalList = new List<int> { 7, 1, 3, 2 };
             //Act
-            var sortedList = originalList.Quicksort();
-            //Assert
-            Assert.Equal(expected: new List<int> { 3, 7 }, actual: sortedList);
-            Assert.Equal(expected: new List<int> { 7, 3 }, actual: originalList);
+            var sortedList = Quicksort(originalList);
+            //Assert,
+            Assert.Equal(expected: new List<int> { 1, 2, 3, 7 }, actual: sortedList);
+            Assert.Equal(expected: new List<int> { 7, 1, 3, 2 }, actual: originalList);
         }
     }
 }

@@ -11,19 +11,32 @@ namespace Functions
             return t => !predicate(t);
         }
 
-        public static IEnumerable<int> Quicksort(this IEnumerable<int> list)
+        public static List<int> Quicksort(List<int> list)
         {
             if (list.Count() < 2)
             {
                 return list;
             }
 
-            if (list.Count() == 2 && list.ElementAt(0) > list.ElementAt(1))
+            if (list.Count() == 2)
             {
-                return new List<int> {list.ElementAt(1), list.ElementAt(0)};
+                if (list.ElementAt(0) > list.ElementAt(1))
+                {
+                    return new List<int> { list.ElementAt(1), list.ElementAt(0) };
+                }
+
+                return list;
             }
 
-            return null;
+            var pivot = list.ElementAt(list.Count() / 2);
+
+            var smaller = list.Where(x => x < pivot).ToList();
+            var bigger = list.Where(x => x > pivot).ToList();
+
+            return Quicksort(smaller)
+                .Append(pivot)
+                .Concat(Quicksort(bigger))
+                .ToList();
         }
     }
 }
