@@ -47,9 +47,9 @@ namespace Functions
                 .ToList();
         }
 
-        public static R Using<TDispose, R>(Func<IDisposable> toDispose, Func<TDispose, R> f) where TDispose : IDisposable
+        public static R Using<TDispose, R>(Func<IDisposable> createDisposable, Func<TDispose, R> f) where TDispose : IDisposable
         {
-            using (var disp = toDispose())
+            using (var disp = createDisposable())
             {
                 return f((TDispose) disp);
             }
