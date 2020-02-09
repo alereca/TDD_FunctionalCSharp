@@ -3,7 +3,7 @@ using Xunit;
 using static Functions.Introduction;
 using System.Collections.Generic;
 
-namespace Tests
+namespace Tests.Chapter1
 {
     public class IntroductionTest
     {
@@ -17,7 +17,7 @@ namespace Tests
             // Act
             var isAlwaysTrueNegated = isAlwaysTruePredicate.NegatePredicate();
             // Assert
-            Assert.False(isAlwaysTrueNegated(1));
+            Assert.False(isAlwaysTrueNegated(0));
         }
 
 
@@ -56,6 +56,22 @@ namespace Tests
             //Assert
             Assert.Equal(expected: new List<string> { "alex", "junior", "karl", "sam" }, actual: sortedList);
             Assert.Equal(expected: new List<string> { "sam", "alex", "karl", "junior" }, actual: originalList);
+        }
+
+        // 4. In this chapter, you've seen a `Using` function that takes an `IDisposable`
+        // and a function of type `Func<TDisp, R>`. Write an overload of `Using` that
+        // takes a `Func<IDisposable>` as first
+        // parameter, instead of the `IDisposable`. (This can be used to fix warnings
+        // given by some code analysis tools about instantiating an `IDisposable` and
+        // not disposing it.)
+        [Fact]
+        public void UsingMethodShouldTakeAnFuncReturningIDisposableAsArgumentAndReturnTheGenericTypeIndicated()
+        {   //Arrange
+            var disposable = new Disposable();
+            //Act
+            var result = Using<Disposable, bool>(() => disposable, d => true);
+            //Assert
+            Assert.True(result);
         }
     }
 }

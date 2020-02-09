@@ -46,5 +46,13 @@ namespace Functions
                 .Concat(GenericQuicksort(bigger, comparison))
                 .ToList();
         }
+
+        public static R Using<TDispose, R>(Func<IDisposable> toDispose, Func<TDispose, R> f) where TDispose : IDisposable
+        {
+            using (var disp = toDispose())
+            {
+                return f((TDispose) disp);
+            }
+        }
     }
 }
