@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Functions
+namespace Functions.Chapter1
 {
     public static class Introduction
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using Xunit;
-using static Functions.Introduction;
+using static Functions.Chapter1.Introduction;
 using System.Collections.Generic;
 
 namespace Tests.Chapter1
 {
-    public class IntroductionTest
+    public class IntroductionTests
     {
         // 1. Write a function that negates a given predicate: whenvever the given predicate
         // evaluates to `true`, the resulting function evaluates to `false`, and vice versa.
