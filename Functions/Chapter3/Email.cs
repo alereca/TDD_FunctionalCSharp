@@ -31,6 +31,7 @@ namespace Functions.Chapter3
             return regex.Match(email).Success;
         }
 
+        // Implicit Type Conversion
         public static implicit operator string(Email email) => email.Value;
 
         public override bool Equals(object obj)
