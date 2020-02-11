@@ -44,5 +44,20 @@ namespace Tests.Chapter3
             Assert.Equal(expected: Some(3), actual: someResult);
             Assert.Equal(expected: None, actual: noneResult);
         }
+
+        // 3 Write a type Email that wraps an underlying string, enforcing that it’s in a valid
+        // format. Ensure that you include the following:
+        // - A smart constructor
+        // - Implicit conversion to string, so that it can easily be used with the typical API
+        // for sending emails
+        [Theory]
+        [ClassData(typeof(EmailTestData))]
+        public void EmailType_ShouldTakeAStringAndReturnSomeEmailIfValidOrNoneIfNot(string emailText, Option<Email> expected)
+        {
+            //Act
+            var email = Email.Of(emailText);
+            //Assert
+            Assert.Equal(expected: expected, actual: email);
+        }
     }
 }
