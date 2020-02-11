@@ -31,7 +31,7 @@ namespace Tests.Chapter3
         // bool isOdd(int i) => i % 2 == 1;
         // new List<int>().Lookup(isOdd) // => None
         // new List<int> { 1 }.Lookup(isOdd) // => Some(1)
-        // Arrow Notation = Lookup: (IEnumerable, T => bool) => T
+        // Arrow Notation = Lookup: (IEnumerable, T => bool) => Option<T>
         [Fact]
         public void Lookup_ShouldReturnSomeWhenThePredicateIsSatisfiedOrNoneWhenItsNot()
         {
