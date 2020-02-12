@@ -5,6 +5,7 @@ using static Functions.Chapter3.MethodSignatures;
 using System.Collections.Generic;
 using Functions.Chapter3;
 using System.Collections;
+using System.Collections.Specialized;
 
 namespace Tests.Chapter3
 {
@@ -58,6 +59,33 @@ namespace Tests.Chapter3
             var email = Email.Of(emailText);
             //Assert
             Assert.Equal(expected: expected, actual: email);
+        }
+
+        // 5.  Write implementations for the methods in the `AppConfig` class
+        // below. (For both methods, a reasonable one-line method body is possible.
+        // Assume settings are of type string, numeric or date.) Can this
+        // implementation help you to test code that relies on settings in a
+        // `.config` file?
+        [Theory]
+        [ClassData(typeof(AppConfigGetTestData))]
+        public void AppConfigGetT_ShouldReturnObjectAssignedToThatKeyOrNoneIfItsNotPresent(NameValueCollection source, string key, Option<string> expected)
+        {
+            var config = new AppConfig(source);
+            //Act
+            var value = config.Get<string>(key);
+            //Assert
+            Assert.Equal(expected: expected, actual: value);
+        }
+
+        [Theory]
+        [ClassData(typeof(AppConfigGetOrDefaultTestData))]
+        public void AppConfigGetTOrDefault_ShouldReturnObjectAssignedToThatKeyOrNoneIfItsNotPresent(NameValueCollection source, string key, Option<string> expected)
+        {
+            var config = new AppConfig(source);
+            //Act
+            var value = config.Get<string>(key, "default");
+            //Assert
+            Assert.Equal(expected: expected, actual: value);
         }
     }
 }
