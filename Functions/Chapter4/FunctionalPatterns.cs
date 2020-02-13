@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Functions.Chapter3;
 using LaYumba.Functional;
 using static LaYumba.Functional.F;
 
@@ -33,5 +34,16 @@ namespace Functions.Chapter4
         {
             return list.Bind(t => List(f(t)));
         }
+
+        public static Option<WorkPermit> GetWorkPermit(Dictionary<string, Employee> people, string employeeId)
+        {
+            return people.Lookup(x => x.Value.Id == employeeId).Bind(x => x.Value.WorkPermit.IsValid() ? x.Value.WorkPermit : None);
+        }
+
+        public static bool IsValid(this Option<WorkPermit> opt)
+            => opt.Match(
+                () => false, 
+                (permit) => permit.Expiry > DateTime.Now);
+
     }
 }
