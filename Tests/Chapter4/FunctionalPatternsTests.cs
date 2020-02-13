@@ -20,9 +20,19 @@ namespace Tests.Chapter4
             Assert.Equal(expected: new HashSet<string> { "x:set", "y:set" }, actual: result);
         }
 
+        // (IDictionary<K, T>, T => R) => IDictionary<R>
         [Fact]
         public void MapDictionaryKT()
         {
+            //Given
+            var dict = new Dictionary<string, string> {{ "ale", "nacion" }, { "pedro", "obligado" }};
+            //Act
+            var result = dict.Map(e => $"{e}/sn");
+            //Then
+            Assert.Equal(
+                new Dictionary<string, string> { { "ale", "nacion/sn" }, { "pedro", "obligado/sn" } },
+                actual: result
+            );
         }
     }
 }
