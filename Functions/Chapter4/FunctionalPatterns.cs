@@ -37,7 +37,17 @@ namespace Functions.Chapter4
 
         public static Option<WorkPermit> GetWorkPermit(Dictionary<string, Employee> people, string employeeId)
         {
-            return people.Lookup(x => x.Value.Id == employeeId).Bind(x => x.Value.WorkPermit).Where(x => x.Expiry >= DateTime.Now);
+            return people.Lookup(x => x.Value.Id == employeeId)
+                .Bind(x => x.Value.WorkPermit)
+                .Where(x => x.Expiry >= DateTime.Now);
         }
+
+        public static double AverageYearsWorkedAtTheCompany(List<Employee> employees)
+        {
+            return employees.Bind(x => x.LeftOn.Map(e => e.YearDiff(x.JoinedOn)))
+                .Average();
+        }
+
+        public static double YearDiff(this DateTime date, DateTime other) => (date - other).Days / 365;
     }
 }

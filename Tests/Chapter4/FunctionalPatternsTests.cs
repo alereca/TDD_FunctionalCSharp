@@ -15,11 +15,11 @@ namespace Tests.Chapter4
         [Fact]
         public void MapSetTTest()
         {
-            //Given
+            //Arrange
             var set = new HashSet<string> { "x", "y" };
-            //When
+            //Act
             var result = set.Map(x => $"{x}:set");
-            //Then
+            //Assert
             Assert.Equal(expected: new HashSet<string> { "x:set", "y:set" }, actual: result);
         }
 
@@ -27,11 +27,11 @@ namespace Tests.Chapter4
         [Fact]
         public void MapDictionaryKTTest()
         {
-            //Given
+            //Arrange
             var dict = new Dictionary<string, string> { { "ale", "nacion" }, { "pedro", "obligado" } };
-            //When
+            //Act
             var result = dict.Map(e => $"{e}/sn");
-            //Then
+            //Assert
             Assert.Equal(
                 new Dictionary<string, string> { { "ale", "nacion/sn" }, { "pedro", "obligado/sn" } },
                 actual: result
@@ -43,20 +43,20 @@ namespace Tests.Chapter4
         [ClassData(typeof(MapOptionUsingBindTestData))]
         public void MapOptionUsingBindTest(LaYumba.Functional.Option<string> opt, LaYumba.Functional.Option<string> expected)
         {
-            //When
+            //Act
             var result = opt.Map(x => $"{x}/more");
-            //Then
+            //Assert
             Assert.Equal(expected: expected, actual: result);
         }
 
         [Fact]
         public void MapIEnumerableUsingBindTest()
         {
-            //Given
+            //Arrange
             var list = new List<int> { 1, 2, 3 };
-            //When
+            //Act
             var result = list.Map(x => x * 2);
-            //Then
+            //Assert
             Assert.Equal(expected: new List<int> { 2, 4, 6 }, actual: result);
         }
 
@@ -69,10 +69,27 @@ namespace Tests.Chapter4
         public void GetWorkPermit_ShouldReturnAWorkPermitOrNoneIfWasExpiredOrNoneWasAvailable(
             Dictionary<string, Employee> people, string employeeId, LaYumba.Functional.Option<WorkPermit> expected)
         {
-            //When
+            //Act
             var result = GetWorkPermit(people, employeeId);
             //Assert
             Assert.Equal(expected: expected, actual: result);
+        }
+
+        // 4 Use Bind to implement AverageYearsWorkedAtTheCompany, shown below (only
+        // employees who have left should be included).
+        [Fact]
+        public void AverageYearsWorkedAtTheCompany_ShouldOnlyCountEmployeesWhoLeft()
+        {
+            //Arrange
+            var employees = new List<Employee> {
+                new Employee("sam", None, DateTime.Now.AddYears(-2), DateTime.Now),
+                new Employee("alex", None, DateTime.Now.AddYears(-5), None),
+                new Employee("gem", None, DateTime.Now.AddYears(-1), DateTime.Now),               
+            };
+            //Act
+            double result = AverageYearsWorkedAtTheCompany(employees);
+            //Assert
+            Assert.Equal(expected: 1.5, actual: result);
         }
     }
 }
