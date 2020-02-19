@@ -3,6 +3,8 @@ using static LaYumba.Functional.F;
 using static Functions.Chapter3.MethodSignatures;
 using Functions.Chapter6;
 using LaYumba.Functional;
+using System;
+using System.Collections.Generic;
 
 namespace Tests.Chapter6
 {
@@ -70,6 +72,20 @@ namespace Tests.Chapter6
 
             //Assert
             Assert.Equal(expected: Some("Friday"), actual: result);
+        }
+
+        // 3. Write a function `Safely` of type ((() → R), (Exception → L)) → Either<L, R> that will
+        // run the given function in a `try/catch`, returning an appropriately
+        // populated `Either`.
+        [Fact]
+        public void Safely_ShouldReturnAnEitherPopulatedWithALeftValueIfAnExceptionOcurredOrARightValueOtherwise()
+        {
+
+            // Note: new List<int>()[4] will always throw System.ArgumentOutOfRangeException
+            //Act
+            var result = FunctionalErrorHandling.Safely(() => new List<int>()[4], e => "An exception ocurred");
+            //Assert
+            Assert.Equal(expected: Left("An exception ocurred"), actual: result);
         }
     }
 }
