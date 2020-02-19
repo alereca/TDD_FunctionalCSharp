@@ -87,5 +87,18 @@ namespace Tests.Chapter6
             //Assert
             Assert.Equal(expected: Left("An exception ocurred"), actual: result);
         }
+
+        // 4. Write a function `Try` of type (() → T) → Exceptional<T> that will
+        // run the given function in a `try/catch`, returning an appropriately
+        // populated `Exceptional`.
+        [Fact]
+        public void Try_ShouldReturnAnExceptionalPopulatedWithAnExceptionOrACorrectValueIfNoneOcurred()
+        {
+            // Note: new List<int>()[4] will always throw System.ArgumentOutOfRangeException
+            //Act
+            var result = FunctionalErrorHandling.Try(() => new List<int>()[4]);
+            //Assert
+            Assert.True(result.Exception);
+        }
     }
 }
