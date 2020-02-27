@@ -1,6 +1,9 @@
 using System;
+using Functions.Chapter7;
+using LaYumba.Functional;
 using Xunit;
 using static Functions.Chapter7.PartialApplicationAndCurrying;
+using static LaYumba.Functional.F;
 
 namespace Tests.Chapter7
 {
@@ -68,6 +71,53 @@ namespace Tests.Chapter7
             var simonSaysToRicardo = composeString.ApplyR("Ricardo");
             //Assert
             Assert.Equal(expected: expected, actual: simonSaysToRicardo(s1, s2));
+        }
+
+        // 2. Let's move on to ternary functions. Define a class `PhoneNumber` with 3
+        // fields: number type(home, mobile, ...), country code('it', 'uk', ...), and number.
+        // `CountryCode` should be a custom type with implicit conversion to and from string.
+        [Fact]
+        public void CountryCode_ShouldHaveImplicitConversionToAndFromString()
+        {
+            //Act
+            CountryCode code = "it";
+            //Assert
+            Assert.Equal(expected: "it", actual: code);
+        }
+
+        // Now define a ternary function that creates a new number, given values for these fields.
+        // What's the signature of your factory function? 
+        // PhoneNumberFactoryMethod: (CountryCode, NumberType, int) => PhoneNumber
+        [Fact]
+        public void PhoneNumberFactoryMethod_ShouldTake3ArgumentsAndReturnAPhoneNUmber()
+        {
+            //Act
+            var num = PhoneNumberFactoryMethod("it", PhoneNumber.NumberType.Home, "445747");
+            //Assert
+            Assert.Equal(expected: new PhoneNumber("it", "445747", PhoneNumber.NumberType.Home),
+                actual: num);
+        }
+
+        // Use partial application to create a binary function that creates a UK number, 
+        // and then again to create a unary function that creates a UK mobile
+        [Fact]
+        public void PhoneNumberFactoryMethod_WhenCurriedTwoTimes_ShouldCreateABinaryFunction()
+        {
+            //Act
+            var ukPhoneNumberCreator = PhoneNumberFuncFactoryMethod().Apply(new CountryCode("uk"));
+
+            //Assert
+            Assert.Equal(new PhoneNumber("uk", "44457", PhoneNumber.NumberType.Business), ukPhoneNumberCreator(PhoneNumber.NumberType.Business ,"44457"));
+        }
+
+        [Fact]
+        public void PhoneNumberFactoryMethod_WhenCurriedTwoTimes_ShouldCreateAUnaryFunction()
+        {
+            //Act
+            var ukMobilePhoneNumberCreator = PhoneNumberFuncFactoryMethod().Apply(new CountryCode("uk")).Apply(PhoneNumber.NumberType.Mobile);
+
+            //Assert
+            Assert.Equal(new PhoneNumber("uk", "43447", PhoneNumber.NumberType.Mobile), ukMobilePhoneNumberCreator("43447"));
         }
     }
 }
