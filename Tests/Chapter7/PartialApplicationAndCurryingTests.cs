@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Functions.Chapter7;
 using LaYumba.Functional;
 using Xunit;
@@ -107,7 +108,7 @@ namespace Tests.Chapter7
             var ukPhoneNumberCreator = PhoneNumberFuncFactoryMethod().Apply(new CountryCode("uk"));
 
             //Assert
-            Assert.Equal(new PhoneNumber("uk", "44457", PhoneNumber.NumberType.Business), ukPhoneNumberCreator(PhoneNumber.NumberType.Business ,"44457"));
+            Assert.Equal(new PhoneNumber("uk", "44457", PhoneNumber.NumberType.Business), ukPhoneNumberCreator(PhoneNumber.NumberType.Business, "44457"));
         }
 
         [Fact]
@@ -118,6 +119,45 @@ namespace Tests.Chapter7
 
             //Assert
             Assert.Equal(new PhoneNumber("uk", "43447", PhoneNumber.NumberType.Mobile), ukMobilePhoneNumberCreator("43447"));
+        }
+
+        // Define Bind, Map and Where in terms of Aggregate 
+        [Fact]
+        public void MapDefinedByAggregate_ShouldMapInnerValuesWithTheProvidedFunction()
+        {
+            //Arrange
+            var list = new List<int> { 1, 2, 3 };
+            //Act
+            var result = list.MapDefinedByAggregate(x => x * 2);
+            //Assert
+            Assert.Equal(expected: new List<int> { 2, 4, 6 }, actual: result);
+        }
+
+        [Fact]
+        public void WhereDefinedByAggregate_ShouldReturnAFilteredCollection()
+        {
+            //Arrange
+            var list = new List<int> { 2, 3, 1, 4 };
+            //Act
+            var result = list.WhereDefinedByAggregate(x => x % 2 == 0);
+            //Assert
+            Assert.Equal(expected: new List<int> { 2, 4 }, actual: result);
+        }
+
+        [Fact]
+        public void BindDefinedByAggregate_ShouldReturnABindedListWithAIEnumerableReturningFunction()
+        {
+            //Arrange
+            var list = new Dictionary<int, List<string>>
+                { {1, new List<string>{"uno", "one"}}, 
+                  {2, new List<string> {"dos", "two"}} };
+            //Act
+            var result = list.BindDefinedByAggregate(x => x.Value);
+            //Assert
+            Assert.Equal(
+                expected: new List<string> { "uno", "one", "dos", "two" },
+                actual: result
+            );
         }
     }
 }
