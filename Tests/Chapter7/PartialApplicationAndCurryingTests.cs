@@ -149,7 +149,7 @@ namespace Tests.Chapter7
         {
             //Arrange
             var list = new Dictionary<int, List<string>>
-                { {1, new List<string>{"uno", "one"}}, 
+                { {1, new List<string>{"uno", "one"}},
                   {2, new List<string> {"dos", "two"}} };
             //Act
             var result = list.BindDefinedByAggregate(x => x.Value);
@@ -158,6 +158,52 @@ namespace Tests.Chapter7
                 expected: new List<string> { "uno", "one", "dos", "two" },
                 actual: result
             );
+        }
+
+        // 3. Functions everywhere. You may still have a feeling that objects are ultimately 
+        // more powerful than functions. Surely, a logger object should expose methods 
+        // for related operations such as Debug, Info, Error? 
+        // To see that this is not necessarily so, challenge yourself to write 
+        // a very simple logging mechanism without defining any classes or structs. 
+        // You should still be able to inject a Log value into a consumer class/function, 
+        // exposing operations like Debug, Info, and Error, like so:
+
+        //static void ConsumeLog(Log log) 
+        //   => log.Info("look! no objects!");
+        [Fact]
+        public void LogInfo_ShouldTakeALogFunctionThatFitsTheDelegateAndExecuteIt()
+        {
+            //Arrange
+            string result = default;
+            Log log = (level, message) => result = $"[{level}]: {message}";
+            //Act
+            log.Info("Normal stuff");
+            //Assert
+            Assert.Equal(expected: "[Info]: Normal stuff", result);
+        }
+
+        [Fact]
+        public void LogDebug_ShouldTakeALogFunctionThatFitsTheDelegateAndExecuteIt()
+        {
+            //Arrange
+            string result = default;
+            Log log = (level, message) => result = $"[{level}]: {message}";
+            //Act
+            log.Debug("Stack trace: ...");
+            //Assert
+            Assert.Equal(expected: "[Debug]: Stack trace: ...", result);
+        }
+
+        [Fact]
+        public void LogError_ShouldTakeALogFunctionThatFitsTheDelegateAndExecuteIt()
+        {
+            //Arrange
+            string result = default;
+            Log log = (level, message) => result = $"[{level}]: {message}";
+            //Act
+            log.Error("Some error");
+            //Assert
+            Assert.Equal(expected: "[Error]: Some error", result);
         }
     }
 }

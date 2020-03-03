@@ -26,7 +26,7 @@ namespace Functions.Chapter7
             => PhoneNumberFactoryMethod;
 
         public static IEnumerable<R> MapDefinedByAggregate<T, R>(this IEnumerable<T> list, Func<T, R> f)
-            => list.Aggregate(new List<R>(), 
+            => list.Aggregate(new List<R>(),
                 (result, item) => result.Append(f(item)).ToList()
             );
 
@@ -36,8 +36,24 @@ namespace Functions.Chapter7
             );
 
         public static IEnumerable<R> BindDefinedByAggregate<T, R>(this IEnumerable<T> list, Func<T, IEnumerable<R>> f)
-            => list.Aggregate(new List<R>(), 
+            => list.Aggregate(new List<R>(),
                 (result, item) => result.Concat(f(item)).ToList()
             );
+
+        public enum Level { Debug, Info, Error }
+        public delegate void Log(Level level, string message);
+
+        public static void Debug(this Log logger, string msg)
+            => logger(Level.Debug, msg);
+
+        public static void Info(this Log logger,string msg)
+            => logger(Level.Info, msg);
+        
+        public static void Error(this Log logger, string msg)
+            => logger(Level.Error, msg);
+
+        //Impure implementation (Not suitable for unit tests)
+        public static Log ConsoleLogger = (Level level, string message)
+            => Console.WriteLine($"[{level}]: {message}");
     }
 }
