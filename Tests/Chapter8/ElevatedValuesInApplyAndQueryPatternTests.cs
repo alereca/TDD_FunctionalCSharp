@@ -4,7 +4,7 @@ using static LaYumba.Functional.F;
 using Functions.Chapter8;
 using Functions.Chapter6;
 
-namespace Tests.Chapter8
+namespace Tests.Chapter8.Ex1_2
 {
     public class ElevatedValuesInApplyAndQueryPatternTests
     {
@@ -13,10 +13,11 @@ namespace Tests.Chapter8
         [InlineData(2, 1, true)]
         [InlineData(666, 1, false)]
         [InlineData(2, 666, false)]
-        public void ApplyForExceptional(int x, int y, bool success)
+        public void ApplyForExceptionalTest(int x, int y, bool success)
         {
             //Arrange
-            Func<int,LaYumba.Functional.Exceptional<int>> numOrDevil = (i) => i switch {
+            Func<int, LaYumba.Functional.Exceptional<int>> numOrDevil = (i) => i switch
+            {
                 666 => new Exception("The number of the devil"),
                 _ => i
             };
@@ -27,7 +28,7 @@ namespace Tests.Chapter8
                 .Apply(numOrDevil(y));
 
             //Assert
-            Assert.Equal(expected: success, actual: result.Success);            
+            Assert.Equal(expected: success, actual: result.Success);
         }
 
 
@@ -38,10 +39,11 @@ namespace Tests.Chapter8
         [InlineData(2, 1, 1, true)]
         [InlineData(666, 1, 33, false)]
         [InlineData(2, 666, 17, false)]
-        public void QueryPatternForExceptional(int x1, int y1, int z1, bool expected)
+        public void QueryPatternForExceptionalTest(int x1, int y1, int z1, bool expected)
         {
             //Arrange
-            Func<int,LaYumba.Functional.Exceptional<int>> numOrDevil = (i) => i switch {
+            Func<int, LaYumba.Functional.Exceptional<int>> numOrDevil = (i) => i switch
+            {
                 666 => new Exception("The number of the devil"),
                 _ => i
             };
@@ -57,7 +59,7 @@ namespace Tests.Chapter8
 
         [Theory]
         [ClassData(typeof(QueryPatternForEitherTestData))]
-        public void QueryPatternForEither(string xStr, string yStr, string zStr, LaYumba.Functional.Either<string, int> expected)
+        public void QueryPatternForEitherTest(string xStr, string yStr, string zStr, LaYumba.Functional.Either<string, int> expected)
         {
             //Act
             var result =
@@ -68,21 +70,68 @@ namespace Tests.Chapter8
             //Assert
             Assert.Equal(expected: expected, actual: result);
         }
+    }
+}
 
-        /*
+namespace Tests.Chapter8.Ex3
+{
+    using LaYumba.Functional;
+    using static Math;
+
+    public class ElevatedValuesInApplyAndQueryPatternTests
+    {
         // Come up with a scenario in which various `Either`-returning operations are chained with `Bind`. 
         // (If you’re short of ideas, you can use the favorite-dish example from chapter 6.) 
         // Rewrite the code using a LINQ expression.
-        [Fact]
-        public void EitherReturningOperationsChainedByBind()
+        [Theory]
+        [ClassData(typeof(EitherReturningOperationsChainedByBindOrQueryPatternTestData))]
+        public void EitherReturningOperationsChainedByBindTest(
+            string nroStr, int divisor, int numBase, Either<string, int> expected
+        )
         {
-            var result = LaYumba.Functional.Int.Parse("4")
-                .ToEither("Parse operation failed")
-                .Bind(i => (LaYumba.Functional.Either<string, int>)Right(i * 2))
-                .Bind(i => (LaYumba.Functional.Either<string, int>)Right(i - 2));
+            //Arrange
+            Func<int, int, Either<string, int>> div = (x, y) =>
+                  y == 0 ?
+                      (Either<string, int>)Left("Division by zero error")
+                    : (Either<string, int>)Right(x / y);
 
-            Assert.Equal(expected: 6, actual: result);
+            Func<int, int, Either<string, int>> log = (x, y) =>
+            y <= 0 ?
+                  (Either<string, int>)Left("Domain error in log function")
+                : (Either<string, int>)Right((int)Log(x, y));
+            //Act
+            var result = Int.Parse(nroStr)
+                .ToEither("Invalid input")
+                .Bind(i => div(i, divisor))
+                .Bind(i => log(i, numBase));
+            //Assert
+            Assert.Equal(expected: expected, actual: result);
         }
-        */
+
+        [Theory]
+        [ClassData(typeof(EitherReturningOperationsChainedByBindOrQueryPatternTestData))]
+        public void EitherReturningOperationsChainedByUsingQueryPatternTest(
+            string nroStr, int divisor, int numBase, Either<string, int> expected
+        )
+        {
+            //Arrange
+            Func<int, int, Either<string, int>> div = (x, y) =>
+                  y == 0 ?
+                      (Either<string, int>)Left("Division by zero error")
+                    : (Either<string, int>)Right(x / y);
+
+            Func<int, int, Either<string, int>> log = (x, y) =>
+            y <= 0 ?
+                  (Either<string, int>)Left("Domain error in log function")
+                : (Either<string, int>)Right((int)Log(x, y));
+            //Act
+            var result =
+                from i in Int.Parse(nroStr).ToEither("Invalid input")
+                from x in div(i, divisor)
+                from j in log(x, numBase)
+                select j;
+            //Assert
+            Assert.Equal(expected: expected, actual: result);
+        }
     }
 }
