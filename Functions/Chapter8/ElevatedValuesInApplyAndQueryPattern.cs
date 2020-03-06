@@ -32,5 +32,20 @@ namespace Functions.Chapter8
                     Success: (r) => Exceptional(project(t,r))
                 )
             );
+
+        public static Either<L,RR> Select<L,R,RR>(this Either<L,R> either, Func<R,RR> func)
+            => either.Map(func);
+
+        public static Either<L,RR> SelectMany<L,R,RR>(this Either<L,R> either, Func<R,Either<L,RR>> func)
+            => either.Bind(func);
+
+        public static Either<L,RRR> SelectMany<L,R,RR,RRR>(this Either<L,R> either, Func<R, Either<L,RR>> bind, Func<R,RR,RRR> project)  
+            => either.Match(
+                Left: (l) => l,
+                Right: (r) => bind(r).Match(
+                    Left: (l) => l,
+                    Right: (rr) => (Either<L,RRR>) Right(project(r,rr))
+                )
+            );
     }
 }

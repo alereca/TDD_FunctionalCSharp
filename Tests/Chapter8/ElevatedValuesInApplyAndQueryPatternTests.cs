@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using static LaYumba.Functional.F;
 using static Functions.Chapter8.ElevatedValuesInApplyAndQueryPattern;
+using Functions.Chapter6;
 
 namespace Tests.Chapter8
 {
@@ -38,5 +39,23 @@ namespace Tests.Chapter8
             //Assert
             Assert.Equal(expected: 8, actual: result);
         }
+
+        [Theory]
+        [ClassData(typeof(QueryPatternForEitherTestData))]
+        public void QueryPatternForEither(string xStr, string yStr, string zStr, LaYumba.Functional.Either<string, int> expected)
+        {
+            //Act
+            var result = 
+                from x in LaYumba.Functional.Int.Parse(xStr).ToEither("Parse operation failed")
+                from y in LaYumba.Functional.Int.Parse(yStr).ToEither("Parse operation failed")
+                from z in LaYumba.Functional.Int.Parse(zStr).ToEither("Parse operation failed")
+                select x + y + z;
+            //Assert
+            Assert.Equal(expected: expected, actual: result);
+        }
+
+        // Come up with a scenario in which various `Either`-returning operations are chained with `Bind`. 
+        // (If you’re short of ideas, you can use the favorite-dish example from chapter 6.) 
+        // Rewrite the code using a LINQ expression.
     }
 }
