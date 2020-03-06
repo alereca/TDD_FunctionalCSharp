@@ -22,10 +22,21 @@ namespace Tests.Chapter8
             Assert.Equal(expected: 1, actual: result);
         }
 
-        
+
         // Implement the query pattern for `Either` and `Exceptional`. 
         // Try to write down the signatures for `Select` and `SelectMany` without looking at any examples. 
         // For the implementation, just follow the types—if it type checks, it’s probably right!
+        [Fact]
+        public void QueryPatternForExceptional()
+        {
+            //Act
+            var result = 
+                from x in Exceptional(2)
+                from y in Exceptional(2)
+                from z in Exceptional(2)
+                select x*y*z;
+            //Assert
+            Assert.Equal(expected: 8, actual: result);
+        }
     }
 }
- 
