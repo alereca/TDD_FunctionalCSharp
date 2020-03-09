@@ -6,13 +6,17 @@ using static Functions.Chapter9.ImmutableObjects;
 
 namespace Tests.Chapter9
 {
+    // Space Complexity in simple terms:
+    //  => Number of new objects required
     public class ImmutableObjectsTests
     {
         // Implement functions to work with the singly linked List defined in this chapter:
         // Tip: start by writing the function signature in arrow-notation
 
         // InsertAt inserts an item at the given index
-        // InsertAt: (List<T>, int index, T value) => List<T>
+        // InsertAt: (List<T>, int, T) => List<T>
+        // Time Complexity: O(i), i < list.length
+        // Spatial Complexity: i list objects
         [Fact]
         public void InsertAt_ShouldTakeAnIndexAndInsertAnItemAtIt()
         {
@@ -25,7 +29,9 @@ namespace Tests.Chapter9
         }
 
         // RemoveAt removes the item at the given index
-        // RemoveAt: (List<T>, int index) => List<T>
+        // RemoveAt: (List<T>, int) => List<T>
+        // Time Complexity: O(i), i < list.length
+        // Spatial Complexity: i list objects
         [Fact]
         public void RemoveAt_ShouldTakeAnIndexAndRemoveTheItemAtIt()
         {
@@ -39,6 +45,8 @@ namespace Tests.Chapter9
 
         // TakeWhile takes a predicate, and traverses the list yielding all items until it find one that fails the predicate
         // TakeWhile: (List<T>, Func<T,bool>) => List<T>
+        // Time Complexity: O(i), i < list.length
+        // Spatial Complexity: i list objects
         [Fact]
         public void TakeWhile_ShouldTakeItemsUntilThePredicateGetsInvalid()
         {
@@ -52,6 +60,8 @@ namespace Tests.Chapter9
 
         // DropWhile works similarly, but excludes all items at the front of the list
         // DropWhile: (List<T>, Func<T,bool>) => List<T>
+        // Time Complexity: O(i), i < list.length
+        // Spatial Complexity: 0
         [Fact]
         public void DropWhile_ShouldDropItemsUntilThePredicateGetsInvalid()
         {

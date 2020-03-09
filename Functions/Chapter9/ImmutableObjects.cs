@@ -51,6 +51,5 @@ namespace Functions.Chapter9
                       tail.DropWhile(predicate) // Ignore heads one after another
                     : list // until the predicate is invalid so the rest of the list is returned
             );
-
     }
 }
