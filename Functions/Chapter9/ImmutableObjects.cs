@@ -25,7 +25,7 @@ namespace Functions.Chapter9
         */
 
         // Cleaner implementations for insertAt and removeAt 
-        
+
         public static List<T> InsertAt<T>(this List<T> list, int i, T value)
             => i == 0 ?
                   List(value, list)
@@ -35,6 +35,10 @@ namespace Functions.Chapter9
             => i == 0 ?
                   list.Tail
                 : List(list.Head, list.Tail.RemoveAt(i - 1)); // (head1, (head2, tail)))
-        
+
+        public static List<T> TakeWhile<T>(this List<T> list, Func<T, bool> predicate)
+            => predicate(list.Head)?
+                  List(list.Head, list.Tail.TakeWhile(predicate)) // (head1, (head2, empty))
+                : List<T>();
     }
 }

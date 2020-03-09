@@ -1,6 +1,7 @@
 using Xunit;
 using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
+using static Functions.Chapter9.ImmutableObjects;
 
 
 namespace Tests.Chapter9
@@ -34,6 +35,19 @@ namespace Tests.Chapter9
             var result = Functions.Chapter9.ImmutableObjects.RemoveAt(list, i: 2);
             //Assert
             Assert.Equal(expected: List(1, 2, 4).ToString(), actual: result.ToString());
+        }
+
+        // TakeWhile takes a predicate, and traverses the list yielding all items until it find one that fails the predicate
+        // TakeWhile: (List<T>, Func<T,bool>) => List<T>
+        [Fact]
+        public void TakeWhile_ShouldTakeItemsUntilThePredicateIsStillValid()
+        {
+            //Arrange
+            var list = List(2, 6, 3, 4);
+            //Act
+            var result = list.TakeWhile(i => i % 2 == 0);
+            //Assert
+            Assert.Equal(expected: List(2, 6).ToString(), actual: result.ToString());
         }
     }
 }
