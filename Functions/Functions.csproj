@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\functional-csharp-code\LaYumba.Functional\LaYumba.Functional.csproj" />
+    <ProjectReference Include="..\..\functional-csharp-code\LaYumba.Functional.Data\LaYumba.Functional.Data.csproj" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="LaYumba.Functional" Version="0.10.0"/>
-  </ItemGroup>
 </Project>
