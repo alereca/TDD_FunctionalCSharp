@@ -18,7 +18,7 @@ namespace Tests.Chapter9
             //Arrange
             var list = List(1, 2, 4);
             //Act
-            var result = Functions.Chapter9.ImmutableObjects.InsertAt(list, index: 2, value: 3);
+            var result = Functions.Chapter9.ImmutableObjects.InsertAt(list, i: 2, value: 3);
             //Assert
             Assert.Equal(expected: List(1, 2, 3, 4).ToString(), actual: result.ToString());
         }
@@ -31,7 +31,7 @@ namespace Tests.Chapter9
             //Arrange
             var list = List(1, 2, 3, 4);
             //Act
-            var result = Functions.Chapter9.ImmutableObjects.RemoveAt(list, index: 2);
+            var result = Functions.Chapter9.ImmutableObjects.RemoveAt(list, i: 2);
             //Assert
             Assert.Equal(expected: List(1, 2, 4).ToString(), actual: result.ToString());
         }
