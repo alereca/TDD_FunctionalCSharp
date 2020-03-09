@@ -40,7 +40,7 @@ namespace Tests.Chapter9
         // TakeWhile takes a predicate, and traverses the list yielding all items until it find one that fails the predicate
         // TakeWhile: (List<T>, Func<T,bool>) => List<T>
         [Fact]
-        public void TakeWhile_ShouldTakeItemsUntilThePredicateIsStillValid()
+        public void TakeWhile_ShouldTakeItemsUntilThePredicateGetsInvalid()
         {
             //Arrange
             var list = List(2, 6, 3, 4);
@@ -48,6 +48,19 @@ namespace Tests.Chapter9
             var result = list.TakeWhile(i => i % 2 == 0);
             //Assert
             Assert.Equal(expected: List(2, 6).ToString(), actual: result.ToString());
+        }
+
+        // DropWhile works similarly, but excludes all items at the front of the list
+        // DropWhile: (List<T>, Func<T,bool>) => List<T>
+        [Fact]
+        public void DropWhile_ShouldDropItemsUntilThePredicateGetsInvalid()
+        {
+            //Arrange
+            var list = List(2, 6, 3, 4);
+            //Act
+            var result = list.DropWhile(i => i % 2 == 0);
+            //Assert
+            Assert.Equal(expected: List(3, 4).ToString(), actual: result.ToString());
         }
     }
 }

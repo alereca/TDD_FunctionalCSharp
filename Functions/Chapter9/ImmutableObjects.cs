@@ -37,8 +37,20 @@ namespace Functions.Chapter9
                 : List(list.Head, list.Tail.RemoveAt(i - 1)); // (head1, (head2, tail)))
 
         public static List<T> TakeWhile<T>(this List<T> list, Func<T, bool> predicate)
-            => predicate(list.Head)?
-                  List(list.Head, list.Tail.TakeWhile(predicate)) // (head1, (head2, empty))
-                : List<T>();
+            => list.Match(
+                () => list,
+                (head, tail) => predicate(list.Head) ?
+                      List(list.Head, list.Tail.TakeWhile(predicate)) // (head1, (head2, empty))
+                    : List<T>()
+            );
+            
+        public static List<T> DropWhile<T>(this List<T> list, Func<T, bool> predicate)
+            => list.Match(
+                () => list,
+                (head, tail) => predicate(head) ?
+                      tail.DropWhile(predicate) // Ignore heads one after another
+                    : list // until the predicate is invalid so the rest of the list is returned
+            );
+
     }
 }
