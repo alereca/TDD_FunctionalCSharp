@@ -1,27 +1,36 @@
+using System;
+using System.Collections.Generic;
 using LaYumba.Functional.Data.LinkedList;
+using static LaYumba.Functional.Data.LinkedList.LinkedList;
 
 namespace Functions.Chapter9
 {
-    public abstract class LabelTree<T>
+    public class LabelTree<T>
     {
+        public T Label { get; }
+        public LaYumba.Functional.Data.LinkedList.List<LabelTree<T>> Subtrees { get; }
 
-    }
-
-    public class Node<T> : LabelTree<T>
-    {
-        public string Label { get; }
-        public List<LabelTree<T>> Subtrees { get; }
-
-        public Node(string label, List<LabelTree<T>> subtrees)
+        public LabelTree(T label, LaYumba.Functional.Data.LinkedList.List<LabelTree<T>> subtrees)
         {
             Label = label;
             Subtrees = subtrees;
         }
+
+        public override string ToString() => $"{Label}:{Subtrees}";
+
+        public override bool Equals(object obj)
+            => obj is LabelTree<T> otherTree &&
+                   this.ToString() == otherTree.ToString();
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Label, Subtrees);
+        }
     }
 
-    public static class LabelTree
+    public static class LabelTreeExt
     {
-        public static LabelTree<T> Node<T>(string Label, List<LabelTree<T>> Subtrees)
-            => new Node<T>(Label, Subtrees);
+        public static LabelTree<T> LabelTree<T>(T Label, LaYumba.Functional.Data.LinkedList.List<LabelTree<T>> Subtrees = null)
+            => new LabelTree<T>(Label, Subtrees ?? List<LabelTree<T>>());
     }
 }

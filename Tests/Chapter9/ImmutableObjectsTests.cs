@@ -3,8 +3,8 @@ using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
 using static Functions.Chapter9.ImmutableObjects;
 using static LaYumba.Functional.Data.BinaryTree.Tree;
-using static Functions.Chapter9.LabelTree;
-
+using static Functions.Chapter9.LabelTreeExt;
+using Functions.Chapter9;
 
 namespace Tests.Chapter9
 {
@@ -130,10 +130,21 @@ namespace Tests.Chapter9
 
         // Implement a LabelTree type, where each node has a label of type string and a list of subtrees; 
         // this could be used to model a typical navigation tree or a cateory tree in a website
+        // Navigation tree example: https://www.researchgate.net/figure/Example-of-the-Navigation-Tree_fig5_221191324
         [Fact]
         public void LabelTreeTest()
         {
-            //var labelTree = Node("home", List(Node("contact", List())));
+            //Arrange
+            var labelTree = 
+            LabelTree("Root", 
+                List(LabelTree("Farmer", 
+                        List(LabelTree("Crop"), 
+                             LabelTree("Vegetable"))), 
+                     LabelTree("Fishermen")));
+            //Act
+            var result = labelTree.ToString();
+            //Assert
+            Assert.Equal(expected: "Root:{ Farmer:{ Crop:{ }, Vegetable:{ } }, Fishermen:{ } }", actual: result);
         }
     }
 }
