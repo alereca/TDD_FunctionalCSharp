@@ -135,16 +135,52 @@ namespace Tests.Chapter9
         public void LabelTreeTest()
         {
             //Arrange
-            var labelTree = 
-            LabelTree("Root", 
-                List(LabelTree("Farmer", 
-                        List(LabelTree("Crop"), 
-                             LabelTree("Vegetable"))), 
+            var labelTree =
+            LabelTree("Root",
+                List(LabelTree("Farmer",
+                        List(LabelTree("Crop"),
+                             LabelTree("Vegetable"))),
                      LabelTree("Fishermen")));
             //Act
             var result = labelTree.ToString();
             //Assert
             Assert.Equal(expected: "Root:{ Farmer:{ Crop:{ }, Vegetable:{ } }, Fishermen:{ } }", actual: result);
+        }
+
+        // Imagine you need to add localization to your navigation tree: you're given a `LabelTree` where
+        // the value of each label is a key, and a dictionary that maps keys
+        // to translations in one of the languages that your site must support
+        // (hint: define `Map` for `LabelTree` and use it to obtain the localized navigation/category tree)
+        [Fact]
+        public void Map_OnLabelTree_ShouldTakeATRansformationFunctionAndApplyItToAllOfItsElements()
+        {
+            //Arrange
+            var labelTree =
+            LabelTree("Root", List(
+                LabelTree("Farmer", List(
+                    LabelTree("Crop"),
+                    LabelTree("Vegetable"))),
+                LabelTree("Fisherman")));
+            var translations = new System.Collections.Generic.Dictionary<string, string>
+            {
+                ["Root"] = "Origen",
+                ["Farmer"] = "Granjero",
+                ["Crop"] = "Cultivo",
+                ["Vegetable"] = "Vegetal",
+                ["Fisherman"] = "Pescador"
+            };
+            //Act
+            var result = labelTree.Map(x => translations[x]);
+            //Assert
+            Assert.Equal(
+                expected:
+            LabelTree("Origen", List(
+                LabelTree("Granjero", List(
+                    LabelTree("Cultivo"),
+                    LabelTree("Vegetal"))),
+                LabelTree("Pescador"))),
+                actual: result
+            );
         }
     }
 }

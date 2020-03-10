@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
 
@@ -32,5 +31,10 @@ namespace Functions.Chapter9
     {
         public static LabelTree<T> LabelTree<T>(T Label, LaYumba.Functional.Data.LinkedList.List<LabelTree<T>> Subtrees = null)
             => new LabelTree<T>(Label, Subtrees ?? List<LabelTree<T>>());
+
+        public static LabelTree<R> Map<T, R>(this LabelTree<T> tree, Func<T, R> f)
+        {
+            return LabelTree(f(tree.Label), tree.Subtrees.Map(t => t.Map(f)));
+        }
     }
 }
