@@ -2,8 +2,8 @@ using Xunit;
 using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
 using static Functions.Chapter9.ImmutableObjects;
-using LaYumba.Functional.Data.BinaryTree;
 using static LaYumba.Functional.Data.BinaryTree.Tree;
+using static Functions.Chapter9.LabelTree;
 
 
 namespace Tests.Chapter9
@@ -126,6 +126,14 @@ namespace Tests.Chapter9
                 expected: Branch(Branch(Leaf(1), Leaf(2)), Branch(Branch(Leaf(2), Leaf(2)), Branch(Leaf(3), Leaf(2)))),
                 actual: result
             );
+        }
+
+        // Implement a LabelTree type, where each node has a label of type string and a list of subtrees; 
+        // this could be used to model a typical navigation tree or a cateory tree in a website
+        [Fact]
+        public void LabelTreeTest()
+        {
+            //var labelTree = Node("home", List(Node("contact", List())));
         }
     }
 }
