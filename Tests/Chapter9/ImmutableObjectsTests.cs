@@ -2,6 +2,8 @@ using Xunit;
 using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
 using static Functions.Chapter9.ImmutableObjects;
+using LaYumba.Functional.Data.BinaryTree;
+using static LaYumba.Functional.Data.BinaryTree.Tree;
 
 
 namespace Tests.Chapter9
@@ -44,7 +46,7 @@ namespace Tests.Chapter9
         }
 
         // TakeWhile takes a predicate, and traverses the list yielding all items until it find one that fails the predicate
-        // TakeWhile: (List<T>, Func<T,bool>) => List<T>
+        // TakeWhile: (List<T>, T => bool) => List<T>
         // Time Complexity: O(i), i < list.length
         // Spatial Complexity: i list objects
         [Fact]
@@ -59,7 +61,7 @@ namespace Tests.Chapter9
         }
 
         // DropWhile works similarly, but excludes all items at the front of the list
-        // DropWhile: (List<T>, Func<T,bool>) => List<T>
+        // DropWhile: (List<T>, T => bool) => List<T>
         // Time Complexity: O(i), i < list.length
         // Spatial Complexity: 0
         [Fact]
@@ -104,6 +106,26 @@ namespace Tests.Chapter9
             Assert.Equal(
                 expected: new System.Collections.Generic.List<int> { 4, 5 },
                 actual: result);
+        }
+
+
+        // Is it possible to define `Bind` for the binary tree implementation shown in this
+        // chapter? If so, implement `Bind`, else explain why it’s not possible (hint: start by writing
+        // the signature; then sketch binary tree and how you could apply a tree-returning function to
+        // each value in the tree).
+        // Bind: (Tree<T>, T => Tree<R>) => Tree<R>
+        [Fact]
+        public void Bind_OnImmutableTree_ShouldTakeATreeReturningFunctionAndApplyItOnAllOfItsElements()
+        {
+            //Arrange
+            var tree = Branch(Leaf(1), Branch(Leaf(2), Leaf(3)));
+            //Act
+            var result = tree.Bind(t => Branch(Leaf(t), Leaf(2)));
+            //Assert
+            Assert.Equal(
+                expected: Branch(Branch(Leaf(1), Leaf(2)), Branch(Branch(Leaf(2), Leaf(2)), Branch(Leaf(3), Leaf(2)))),
+                actual: result
+            );
         }
     }
 }

@@ -1,6 +1,8 @@
 using System;
+using LaYumba.Functional.Data.BinaryTree;
 using LaYumba.Functional.Data.LinkedList;
 using static LaYumba.Functional.Data.LinkedList.LinkedList;
+using static LaYumba.Functional.Data.BinaryTree.Tree;
 
 namespace Functions.Chapter9
 {
@@ -77,5 +79,14 @@ namespace Functions.Chapter9
                 }
             }
         }
+
+        public static Tree<R> Bind<T,R>(this Tree<T> tree, Func<T,Tree<R>> f)
+            => tree.Match(
+                (leaf) => f(leaf),
+                (left, right) => Branch(
+                    Left: left.Bind(f),
+                    Right: right.Bind(f)
+                )
+            );
     }
 }
