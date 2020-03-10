@@ -43,7 +43,7 @@ namespace Functions.Chapter9
                       List(list.Head, list.Tail.TakeWhile(predicate)) // (head1, (head2, empty))
                     : List<T>()
             );
-            
+
         public static List<T> DropWhile<T>(this List<T> list, Func<T, bool> predicate)
             => list.Match(
                 () => list,
@@ -51,5 +51,31 @@ namespace Functions.Chapter9
                       tail.DropWhile(predicate) // Ignore heads one after another
                     : list // until the predicate is invalid so the rest of the list is returned
             );
+
+        public static System.Collections.Generic.IEnumerable<T> TakeWhile<T>(this System.Collections.Generic.IEnumerable<T> list, Func<T, bool> predicate)
+        {
+            foreach (T item in list)
+            {
+                if (!predicate(item))
+                {
+                    yield break;
+                }
+
+                yield return item;
+            }
+        }
+
+        public static System.Collections.Generic.IEnumerable<T> DropWhile<T>(this System.Collections.Generic.IEnumerable<T> list, Func<T, bool> predicate)
+        {
+            bool clean = true;
+            foreach (var item in list)
+            {
+                if (!clean || !predicate(item))
+                {
+                    yield return item;
+                    clean = false;
+                }
+            }
+        }
     }
 }

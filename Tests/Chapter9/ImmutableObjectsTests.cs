@@ -72,5 +72,38 @@ namespace Tests.Chapter9
             //Assert
             Assert.Equal(expected: List(3, 4).ToString(), actual: result.ToString());
         }
+
+        // TakeWhile and DropWhile are useful when working with a list that is sorted 
+        // and you’d like to get all items greater/smaller than some value; write implementations 
+        // that take an IEnumerable rather than a List
+
+        // Note: yield return, collects elements but in a lazy manner 
+        // since it will only retrieve the data when it's requested by some client code
+        // https://stackoverflow.com/questions/2652656/method-not-called-when-using-yield-return
+        [Fact]
+        public void TakeWhile_WithIEnumerable_ShouldTakeItemsUntilThePredicateGetsInvalid()
+        {
+            //Arrange
+            var list = new System.Collections.Generic.List<int> { 1, 2, 3, 4, 5 };
+            //Act
+            var result = list.TakeWhile(i => i < 4);
+            //Assert
+            Assert.Equal(
+                expected: new System.Collections.Generic.List<int> { 1, 2, 3 },
+                actual: result);
+        }
+
+        [Fact]
+        public void DropWhile_WithIEnumerable_ShouldDropItemsUntilThePredicateGetsInvalid()
+        {
+            //Arrange
+            var list = new System.Collections.Generic.List<int> { 1, 2, 3, 4, 5 };
+            //Act
+            var result = list.DropWhile(i => i < 4);
+            //Assert
+            Assert.Equal(
+                expected: new System.Collections.Generic.List<int> { 4, 5 },
+                actual: result);
+        }
     }
 }
